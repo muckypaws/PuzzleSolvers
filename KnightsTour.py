@@ -163,11 +163,10 @@ def test_all_start_positions():
             if not result:
                 print(f"⚠️ Failed from {chr(file + ord('a'))}{8 - rank}")
 
-
 def main():
     print("Knight's Tour - Warnsdorff's Heuristic")
 
-    test_all_start_positions()
+    #test_all_start_positions()
 
     square = input("Enter starting square (e.g., e4): ").lower().strip()
     coords = parse_chess_square(square)
