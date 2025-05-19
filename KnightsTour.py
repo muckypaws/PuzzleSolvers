@@ -2,6 +2,14 @@ import os
 import time
 
 def animate_knight_tour(board, delay=0.15, use_unicode=True):
+    """
+    Animates the knight's tour on an ASCII chessboard.
+
+    Args:
+        board (list of list of int): The completed knight's tour board.
+        delay (float): Delay in seconds between animation steps.
+        use_unicode (bool): Whether to display a Unicode horse symbol.
+    """
     symbol = "🐴 " if use_unicode else " K "
     files = "abcdefgh"
     
@@ -39,16 +47,29 @@ MOVES = [
     (2, 1),  (1, 2),  (-1, 2), (-2, 1)
 ]
 
+
 def is_valid(x, y, board):
+    """
+    Checks if a position is within bounds and not yet visited.
+    """
     return 0 <= x < BOARD_SIZE and 0 <= y < BOARD_SIZE and board[y][x] == -1
 
 def count_onward_moves(x, y, board):
+    """
+    Counts the number of valid onward moves from a given position.
+    """
     return sum(
         1 for dx, dy in MOVES
         if is_valid(x + dx, y + dy, board)
     )
 
 def warnsdorff_tour(x, y):
+    """
+    Attempts a knight's tour using Warnsdorff’s Rule heuristic.
+
+    Returns:
+        A completed board or None if a tour can't be completed.
+    """
     board = [[-1 for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)]
     board[y][x] = 0
     pos = (x, y)
@@ -69,6 +90,9 @@ def warnsdorff_tour(x, y):
     return board
 
 def backtrack_tour(x, y):
+    """
+    Recursive backtracking method for knight's tour (fallback if heuristic fails).
+    """
     board = [[-1 for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)]
     board[y][x] = 0
     solutions = []
@@ -95,6 +119,9 @@ def backtrack_tour(x, y):
 
 
 def find_knight_tour(x, y):
+    """
+    Attempts Warnsdorff’s heuristic, falls back to backtracking if needed.
+    """
     result = warnsdorff_tour(x, y)
     if result:
         return result
@@ -103,6 +130,9 @@ def find_knight_tour(x, y):
 
 
 def print_ascii_board(board):
+    """
+    Displays the knight's tour in a human-readable ASCII board.
+    """
     files = "abcdefgh"
     # Column labels (aligned)
     print("   " + "  ".join(f" {f}" for f in files))
@@ -118,6 +148,9 @@ def print_ascii_board(board):
     print("   " + "  ".join(f" {f}" for f in files))
 
 def parse_chess_square(square):
+    """
+    Converts a string like 'e4' to (x, y) board coordinates.
+    """
     if len(square) != 2:
         return None
     file, rank = square[0], square[1]
@@ -128,6 +161,9 @@ def parse_chess_square(square):
     return x, y
 
 def validate_tour(board, verbose=True):
+    """
+    Validates that the knight’s tour visits every square exactly once with legal moves.
+    """
     positions = [None] * (BOARD_SIZE * BOARD_SIZE)
     for y in range(BOARD_SIZE):
         for x in range(BOARD_SIZE):
@@ -155,6 +191,9 @@ def validate_tour(board, verbose=True):
     return True
 
 def test_all_start_positions():
+    """
+    Test knight's tour from every square on the board.
+    """
     for rank in range(8):
         for file in range(8):
             #result = warnsdorff_tour(file, rank)
@@ -164,7 +203,11 @@ def test_all_start_positions():
                 print(f"⚠️ Failed from {chr(file + ord('a'))}{8 - rank}")
 
 def main():
+    """
+    Entry point: prompts user for input and runs knight's tour.
+    """
     print("Knight's Tour - Warnsdorff's Heuristic")
+    print("Jason Brooks - www.muckypaws.com")
 
     #test_all_start_positions()
 
